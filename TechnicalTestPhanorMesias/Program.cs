@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TechnicalTestPhanorMesias.DataModel;
+using TechnicalTestPhanorMesias.Services.Interfaces;
+using TechnicalTestPhanorMesias.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,9 @@ builder.Services.AddDbContext<DbRealStateCompanyContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("MainConnectionString"));
 });
+
+builder.Services.AddScoped<IPropertyService, PropertyService>();
+builder.Services.AddScoped<IOwnerService, OwnerService>();
 
 var app = builder.Build();
 

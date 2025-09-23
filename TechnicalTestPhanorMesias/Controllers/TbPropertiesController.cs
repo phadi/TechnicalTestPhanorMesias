@@ -1,45 +1,46 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using TechnicalTestPhanorMesias.DataModel;
+using TechnicalTestPhanorMesias.Models;
+using TechnicalTestPhanorMesias.Models.DTOs;
+using TechnicalTestPhanorMesias.Services.Interfaces;
 
 namespace TechnicalTestPhanorMesias.Controllers
 {
     public class TbPropertiesController : Controller
     {
-        private readonly DbRealStateCompanyContext _context;
+        private readonly IPropertyService _propertyService;
+        private readonly IOwnerService _ownerService;
 
-        public TbPropertiesController(DbRealStateCompanyContext context)
+        public TbPropertiesController(IPropertyService propertyService, IOwnerService ownerService)
         {
-            _context = context;
+            _propertyService = propertyService;
+            _ownerService = ownerService;
         }
 
         // GET: TbProperties
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(PropertyIndex propertyIndexParam)
         {
-            var dbRealStateCompanyContext = _context.TbProperties.Include(t => t.IdOwnerNavigation);
-            return View(await dbRealStateCompanyContext.ToListAsync());
+            var dbRealStateCompanyContext = await _propertyService.FilterProperties(propertyIndexParam);
+            PropertyIndex propertyIndex = new PropertyIndex();
+            propertyIndex.Properties = dbRealStateCompanyContext;
+            return View(propertyIndex);
         }
 
         // GET: TbProperties/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
+            if (id == 0)
             {
                 return NotFound();
             }
 
-            var tbProperty = await _context.TbProperties
-                .Include(t => t.IdOwnerNavigation)
-                .FirstOrDefaultAsync(m => m.IdProperty == id);
-            if (tbProperty == null)
-            {
-                return NotFound();
-            }
+            var tbProperty = await _propertyService.GetPropertyDetails(id);
 
             return View(tbProperty);
         }
@@ -47,7 +48,7 @@ namespace TechnicalTestPhanorMesias.Controllers
         // GET: TbProperties/Create
         public IActionResult Create()
         {
-            ViewData["IdOwner"] = new SelectList(_context.TbOwners, "IdOwner", "IdOwner");
+            ViewData["IdOwner"] = new SelectList(_ownerService.GetOwners(), "IdOwner", "FullName");
             return View();
         }
 
@@ -57,30 +58,32 @@ namespace TechnicalTestPhanorMesias.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("IdProperty,Name,Address,Price,CodeInternal,Year,IdOwner")] TbProperty tbProperty)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(tbProperty);
-                await _context.SaveChangesAsync();
+                await _propertyService.CreateProperty(tbProperty);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdOwner"] = new SelectList(_context.TbOwners, "IdOwner", "FirstName", tbProperty.IdOwner);
+            catch{ }
+            
+            ViewData["IdOwner"] = new SelectList(_ownerService.GetOwners(), "IdOwner", "FullName", tbProperty.IdOwner);
             return View(tbProperty);
         }
 
         // GET: TbProperties/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
+            if (id == 0)
             {
                 return NotFound();
             }
 
-            var tbProperty = await _context.TbProperties.FindAsync(id);
+            var tbProperty = await _propertyService.GetPropertyById(id);
             if (tbProperty == null)
             {
                 return NotFound();
             }
-            ViewData["IdOwner"] = new SelectList(_context.TbOwners, "IdOwner", "FirstName", tbProperty.IdOwner);
+
+            ViewData["IdOwner"] = new SelectList(_ownerService.GetOwners(), "IdOwner", "FullName", tbProperty.IdOwner);
             return View(tbProperty);
         }
 
@@ -97,8 +100,7 @@ namespace TechnicalTestPhanorMesias.Controllers
 
             try
             {
-                _context.Update(tbProperty);
-                await _context.SaveChangesAsync();
+                await _propertyService.UpdateProperty(tbProperty);
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateConcurrencyException)
@@ -112,48 +114,14 @@ namespace TechnicalTestPhanorMesias.Controllers
                     throw;
                 }
             }
-            
 
-            ViewData["IdOwner"] = new SelectList(_context.TbOwners, "IdOwner", "FirstName", tbProperty.IdOwner);
+            ViewData["IdOwner"] = new SelectList(_ownerService.GetOwners(), "IdOwner", "FullName", tbProperty.IdOwner);
             return View(tbProperty);
-        }
-
-        // GET: TbProperties/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tbProperty = await _context.TbProperties
-                .Include(t => t.IdOwnerNavigation)
-                .FirstOrDefaultAsync(m => m.IdProperty == id);
-            if (tbProperty == null)
-            {
-                return NotFound();
-            }
-
-            return View(tbProperty);
-        }
-
-        // POST: TbProperties/Delete/5
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var tbProperty = await _context.TbProperties.FindAsync(id);
-            if (tbProperty != null)
-            {
-                _context.TbProperties.Remove(tbProperty);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool TbPropertyExists(int id)
         {
-            return _context.TbProperties.Any(e => e.IdProperty == id);
+            return _propertyService.GetTbProperties().Any(e => e.IdProperty == id);
         }
     }
 }
