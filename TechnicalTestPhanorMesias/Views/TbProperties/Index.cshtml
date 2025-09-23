@@ -52,7 +52,7 @@
                 @Html.DisplayFor(modelItem => item.Year)
             </td>
             <td>
-                    @Html.DisplayFor(modelItem => item.IdOwnerNavigation.FirstName)  @Html.DisplayFor(modelItem => item.IdOwnerNavigation.LastName)
+                @Html.DisplayFor(modelItem => item.IdOwnerNavigation.IdOwner)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdProperty">Edit</a> |

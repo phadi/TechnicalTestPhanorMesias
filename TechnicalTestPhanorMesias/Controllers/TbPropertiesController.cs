@@ -55,7 +55,6 @@ namespace TechnicalTestPhanorMesias.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdProperty,Name,Address,Price,CodeInternal,Year,IdOwner")] TbProperty tbProperty)
         {
             if (ModelState.IsValid)
@@ -64,7 +63,7 @@ namespace TechnicalTestPhanorMesias.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdOwner"] = new SelectList(_context.TbOwners, "IdOwner", "IdOwner", tbProperty.IdOwner);
+            ViewData["IdOwner"] = new SelectList(_context.TbOwners, "IdOwner", "FirstName", tbProperty.IdOwner);
             return View(tbProperty);
         }
 
@@ -81,7 +80,7 @@ namespace TechnicalTestPhanorMesias.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdOwner"] = new SelectList(_context.TbOwners, "IdOwner", "IdOwner", tbProperty.IdOwner);
+            ViewData["IdOwner"] = new SelectList(_context.TbOwners, "IdOwner", "FirstName", tbProperty.IdOwner);
             return View(tbProperty);
         }
 
@@ -89,7 +88,6 @@ namespace TechnicalTestPhanorMesias.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdProperty,Name,Address,Price,CodeInternal,Year,IdOwner")] TbProperty tbProperty)
         {
             if (id != tbProperty.IdProperty)
@@ -97,27 +95,26 @@ namespace TechnicalTestPhanorMesias.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(tbProperty);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TbPropertyExists(tbProperty.IdProperty))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _context.Update(tbProperty);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdOwner"] = new SelectList(_context.TbOwners, "IdOwner", "IdOwner", tbProperty.IdOwner);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TbPropertyExists(tbProperty.IdProperty))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            
+
+            ViewData["IdOwner"] = new SelectList(_context.TbOwners, "IdOwner", "FirstName", tbProperty.IdOwner);
             return View(tbProperty);
         }
 
@@ -142,7 +139,6 @@ namespace TechnicalTestPhanorMesias.Controllers
 
         // POST: TbProperties/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var tbProperty = await _context.TbProperties.FindAsync(id);
