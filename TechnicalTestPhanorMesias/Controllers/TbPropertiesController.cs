@@ -29,6 +29,7 @@ namespace TechnicalTestPhanorMesias.Controllers
             var dbRealStateCompanyContext = await _propertyService.FilterProperties(propertyIndexParam);
             PropertyIndex propertyIndex = new PropertyIndex();
             propertyIndex.Properties = dbRealStateCompanyContext;
+           
             return View(propertyIndex);
         }
 
