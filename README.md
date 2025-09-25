@@ -5,6 +5,12 @@ La solucion consta de los siguientes proyectos:
 - RealStateDataModel --> Libreria de clases para el manejo de datos
 - RealStateService   --> Libreria de clases para alojar los servicios necesarios
 - RealStateApi       --> Web API para alojar los endpoints necesarios
-- TechnicalTestPhanorMesias --> Aplicacion web MVC para creat una UI (pendiente por terminar)
+       - api/TbProperties: Lista todas las propiedades
+       - api/TbProperties/GetFilteredTbProperties: Lista las propiedades con filtros
+       - api/TbProperties/UpdateProperty: Actualiza la propiedad
+       - api/TbProperties/ChangePrice: Actualiza el precoi de la propiedad
+       - api/TbProperties/CreateProperty: Crea una nueva propiedad
+       - api/TbProperties/UploadImage: Agrega imagenes a la propiedad
+- TechnicalTestPhanorMesias --> Aplicacion web MVC para crear una UI. Se encuentra publicada en http://realstatetest.somee.com/ (pendiente por terminar)
 
-  El backup de la base de datos s eencuentra en la ruta: 
+  El backup de la base de datos s eencuentra en la ruta: https://github.com/phadi/TechnicalTestPhanorMesias/tree/master/RealStateDataModel/Backup.
