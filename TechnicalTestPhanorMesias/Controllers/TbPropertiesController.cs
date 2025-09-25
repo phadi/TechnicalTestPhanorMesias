@@ -7,15 +7,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using RealStateDataModel.DataModel;
 using TechnicalTestPhanorMesias.Models;
+using RealStateService.Interfaces;
 
 namespace TechnicalTestPhanorMesias.Controllers
 {
     public class TbPropertiesController : Controller
     {
-        private readonly RealStateService.Interfaces.IPropertyService _propertyService;
-        private readonly RealStateService.Interfaces.IOwnerService _ownerService;
+        private readonly IPropertyService _propertyService;
+        private readonly IOwnerService _ownerService;
 
-        public TbPropertiesController(RealStateService.Interfaces.IPropertyService propertyService, RealStateService.Interfaces.IOwnerService ownerService)
+        public TbPropertiesController(IPropertyService propertyService, IOwnerService ownerService)
         {
             _propertyService = propertyService;
             _ownerService = ownerService;

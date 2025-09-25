@@ -13,8 +13,8 @@ builder.Services.AddDbContext<DbRealStateCompanyContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MainConnectionString"));
 });
 
-builder.Services.AddScoped<IPropertyService, PropertyService>();
-builder.Services.AddScoped<IOwnerService, OwnerService>();
+builder.Services.AddTransient<IPropertyService, PropertyService>();
+builder.Services.AddTransient<IOwnerService, OwnerService>();
 
 var app = builder.Build();
 
