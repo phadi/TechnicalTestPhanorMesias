@@ -20,4 +20,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RealStateDataModel\RealStateDataModel.csproj" />
+    <ProjectReference Include="..\RealStateService\RealStateService.csproj" />
+  </ItemGroup>
+
 </Project>

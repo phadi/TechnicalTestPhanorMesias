@@ -1,11 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RealStateDataModel.DataModel;
+using RealStateDataModel.DTOs;
+using RealStateDataModel.Models;
+using RealStateService.Interfaces;
+using System;
 using System.Collections.Generic;
-using TechnicalTestPhanorMesias.DataModel;
-using TechnicalTestPhanorMesias.Models;
-using TechnicalTestPhanorMesias.Models.DTOs;
-using TechnicalTestPhanorMesias.Services.Interfaces;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace TechnicalTestPhanorMesias.Services.Services
+namespace RealStateService.Services
 {
     public class PropertyService : IPropertyService
     {
@@ -18,8 +22,8 @@ namespace TechnicalTestPhanorMesias.Services.Services
         public async Task<List<TbPropertyDTO>> GetProperties()
         {
             var dbRealStateCompanyContext = await _context.TbProperties.Include(t => t.IdOwnerNavigation).ToListAsync();
-            List<TbPropertyDTO> tbPropertyDTOs = new List < TbPropertyDTO >(); 
-            foreach(TbProperty tbProperty in dbRealStateCompanyContext)
+            List<TbPropertyDTO> tbPropertyDTOs = new List<TbPropertyDTO>();
+            foreach (TbProperty tbProperty in dbRealStateCompanyContext)
             {
                 TbPropertyDTO tbPropertyDTO = TbPropertyDTO.ConvertToDTO(tbProperty);
                 tbPropertyDTOs.Add(tbPropertyDTO);
@@ -39,9 +43,9 @@ namespace TechnicalTestPhanorMesias.Services.Services
 
             if (!string.IsNullOrEmpty(propertyIndexParam.CodeInternal))
             {
-                if (filterPropertyDTOs.Count == 0)  
+                if (filterPropertyDTOs.Count == 0)
                     filterPropertyDTOs = tbPropertyDTOs.Where(x => x.CodeInternal.Contains(propertyIndexParam.CodeInternal)).ToList();
-                else 
+                else
                     filterPropertyDTOs = filterPropertyDTOs.Where(x => x.CodeInternal.Contains(propertyIndexParam.CodeInternal)).ToList();
                 if (filterPropertyDTOs.Count != 0) tbPropertyDTOs = filterPropertyDTOs;
             }

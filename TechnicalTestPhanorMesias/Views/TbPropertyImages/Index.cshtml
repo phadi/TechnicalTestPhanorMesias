@@ -1,0 +1,53 @@
+﻿@model IEnumerable<RealStateDataModel.DataModel.TbPropertyImage>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FilePath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Enabled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdImageTypeNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdPropertyNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FilePath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Enabled)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdImageTypeNavigation.IdImageType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdPropertyNavigation.IdProperty)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdPropertyImage">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdPropertyImage">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdPropertyImage">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

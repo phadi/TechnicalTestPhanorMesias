@@ -5,30 +5,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TechnicalTestPhanorMesias.DataModel;
+using RealStateDataModel.DataModel;
 using TechnicalTestPhanorMesias.Models;
-using TechnicalTestPhanorMesias.Models.DTOs;
-using TechnicalTestPhanorMesias.Services.Interfaces;
 
 namespace TechnicalTestPhanorMesias.Controllers
 {
     public class TbPropertiesController : Controller
     {
-        private readonly IPropertyService _propertyService;
-        private readonly IOwnerService _ownerService;
+        private readonly RealStateService.Interfaces.IPropertyService _propertyService;
+        private readonly RealStateService.Interfaces.IOwnerService _ownerService;
 
-        public TbPropertiesController(IPropertyService propertyService, IOwnerService ownerService)
+        public TbPropertiesController(RealStateService.Interfaces.IPropertyService propertyService, RealStateService.Interfaces.IOwnerService ownerService)
         {
             _propertyService = propertyService;
             _ownerService = ownerService;
         }
 
         // GET: TbProperties
-        public async Task<IActionResult> Index(PropertyIndex propertyIndexParam)
+        public async Task<IActionResult> Index(RealStateDataModel.Models.PropertyIndex propertyIndexParam)
         {
             var dbRealStateCompanyContext = await _propertyService.FilterProperties(propertyIndexParam);
-            PropertyIndex propertyIndex = new PropertyIndex();
+            RealStateDataModel.Models.PropertyIndex propertyIndex = new RealStateDataModel.Models.PropertyIndex();
             propertyIndex.Properties = dbRealStateCompanyContext;
+           
             return View(propertyIndex);
         }
 

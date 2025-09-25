@@ -1,7 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Diagnostics;
-using TechnicalTestPhanorMesias.DataModel;
+﻿using RealStateDataModel.DataModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace TechnicalTestPhanorMesias.Models.DTOs
+namespace RealStateDataModel.DTOs
 {
     public class TbOwnerDTO
     {
@@ -21,7 +25,7 @@ namespace TechnicalTestPhanorMesias.Models.DTOs
         {
             get
             {
-                return FirstName + " " + LastName ;
+                return FirstName + " " + LastName;
             }
         }
 

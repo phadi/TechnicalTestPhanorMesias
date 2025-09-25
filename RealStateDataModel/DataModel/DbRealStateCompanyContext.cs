@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace TechnicalTestPhanorMesias.DataModel;
+namespace RealStateDataModel.DataModel;
 
 public partial class DbRealStateCompanyContext : DbContext
 {
-    public DbRealStateCompanyContext()
-    {
-    }
-
     public DbRealStateCompanyContext(DbContextOptions<DbRealStateCompanyContext> options)
         : base(options)
     {
@@ -24,10 +20,7 @@ public partial class DbRealStateCompanyContext : DbContext
     public virtual DbSet<TbPropertyImage> TbPropertyImages { get; set; }
 
     public virtual DbSet<TbPropertyTrace> TbPropertyTraces { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:MainConnectionString");
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TbImageType>(entity =>

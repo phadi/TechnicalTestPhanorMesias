@@ -1,6 +1,11 @@
-﻿using TechnicalTestPhanorMesias.Models.DTOs;
+﻿using RealStateDataModel.DTOs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace TechnicalTestPhanorMesias.Models
+namespace RealStateDataModel.Models
 {
     public class PropertyIndex
     {
