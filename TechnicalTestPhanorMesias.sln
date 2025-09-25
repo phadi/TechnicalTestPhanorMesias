@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealStateApi", "RealStateAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealStateService", "RealStateService\RealStateService.csproj", "{616B3708-079C-4436-8C64-801630556EFE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealStateApiTest", "RealStateApiTest\RealStateApiTest.csproj", "{E4848CC8-DA6C-4934-8B68-BCA75B134169}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{616B3708-079C-4436-8C64-801630556EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{616B3708-079C-4436-8C64-801630556EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{616B3708-079C-4436-8C64-801630556EFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4848CC8-DA6C-4934-8B68-BCA75B134169}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4848CC8-DA6C-4934-8B68-BCA75B134169}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4848CC8-DA6C-4934-8B68-BCA75B134169}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4848CC8-DA6C-4934-8B68-BCA75B134169}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
