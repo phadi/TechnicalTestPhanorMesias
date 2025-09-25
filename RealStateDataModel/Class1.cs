@@ -1,4 +1,4 @@
-﻿namespace RealStateModel
+﻿namespace RealStateDataModel
 {
     public class Class1
     {

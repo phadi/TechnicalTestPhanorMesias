@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TechnicalTestPhanorMesias.DataModel;
+namespace RealStateDataModel.DataModel;
 
 public partial class TbProperty
 {

@@ -1,9 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TechnicalTestPhanorMesias.DataModel;
-using TechnicalTestPhanorMesias.Models;
-using TechnicalTestPhanorMesias.Models.DTOs;
+using RealStateDataModel.DataModel;
+using RealStateDataModel.DTOs;
+using RealStateDataModel.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace TechnicalTestPhanorMesias.Services.Interfaces
+namespace RealStateService.Interfaces
 {
     public interface IPropertyService
     {

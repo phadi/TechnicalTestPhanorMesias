@@ -1,6 +1,11 @@
-﻿using TechnicalTestPhanorMesias.DataModel;
+﻿using RealStateDataModel.DataModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace TechnicalTestPhanorMesias.Models.DTOs
+namespace RealStateDataModel.DTOs
 {
     public class TbPropertyDTO
     {
@@ -16,11 +21,11 @@ namespace TechnicalTestPhanorMesias.Models.DTOs
 
         public int? Year { get; set; }
 
-        public int IdOwner { get; set; }        
+        public int IdOwner { get; set; }
 
         public virtual TbOwnerDTO Owners { get; set; } = null!;
 
-        public static TbProperty ConvertToData(TbPropertyDTO tbPropertyDTO) 
+        public static TbProperty ConvertToData(TbPropertyDTO tbPropertyDTO)
         {
             TbProperty tbProperty = new TbProperty();
             tbProperty.IdProperty = tbPropertyDTO.IdProperty;

@@ -1,10 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RealStateDataModel.DataModel;
+using RealStateDataModel.DTOs;
+using RealStateService.Interfaces;
+using System;
 using System.Collections.Generic;
-using TechnicalTestPhanorMesias.DataModel;
-using TechnicalTestPhanorMesias.Models.DTOs;
-using TechnicalTestPhanorMesias.Services.Interfaces;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace TechnicalTestPhanorMesias.Services.Services
+namespace RealStateService.Services
 {
     public class OwnerService : IOwnerService
     {
@@ -13,7 +17,6 @@ namespace TechnicalTestPhanorMesias.Services.Services
         {
             _context = context;
         }
-
         public List<TbOwnerDTO> GetOwners()
         {
             List<TbOwnerDTO> owners = new List<TbOwnerDTO>();
@@ -22,7 +25,7 @@ namespace TechnicalTestPhanorMesias.Services.Services
                 TbOwnerDTO ownerDTO = TbOwnerDTO.ConvertToDTO(tbOwner);
                 owners.Add(ownerDTO);
             }
-            return owners; 
+            return owners;
         }
     }
 }

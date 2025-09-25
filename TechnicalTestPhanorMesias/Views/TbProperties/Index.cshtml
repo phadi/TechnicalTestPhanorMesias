@@ -1,4 +1,4 @@
-﻿@model TechnicalTestPhanorMesias.Models.PropertyIndex
+﻿@model RealStateDataModel.Models.PropertyIndex
 
 @{
     ViewData["Title"] = "Index";
@@ -10,60 +10,64 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-<h3>FILTERS</h3>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Owner Name
-            </th>
-            <th>
-                Price range
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Address
-            </th>
-            <th>
-                CodeInternal
-            </th>
-            <th>
-                Year
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <form asp-action="Index">
-                <td>
-                    <input asp-for="OwnerName" />
-                </td>
-                <td>
-                    <input asp-for="MinPrice" />
-                    <input asp-for="MaxPrice" />
-                </td>
-                <td>
-                    <input asp-for="Name" />
-                </td>
-                <td>
-                    <input asp-for="Address" />
-                </td>
-                <td>
-                    <input asp-for="CodeInternal" />
-                </td>
-                <td>
-                    <input asp-for="Year" />
-                </td>
-                <td>
-                    <input type="submit" value="Search" class="btn btn-primary" />
-                </td>
-            </form>            
-        </tr>
-    </tbody>
-</table>
+ <form asp-action="Index">
+    <h3>FILTERS</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Owner Name
+                </th>
+                <th>
+                    Price range
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Address
+                </th>
+                <th>
+                    CodeInternal
+                </th>
+                <th>
+                    Year
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                    <td>
+                        <input asp-for="OwnerName" />
+                    </td>
+                    <td>
+                        <input asp-for="MinPrice" />
+                        <input asp-for="MaxPrice" />
+                    </td>
+                    <td>
+                        <input asp-for="Name" />
+                    </td>
+                    <td>
+                        <input asp-for="Address" />
+                    </td>
+                    <td>
+                        <input asp-for="CodeInternal" />
+                    </td>
+                    <td>
+                        <input asp-for="Year" />
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+
+    <p>
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </p>
+
+</form>
 
 <hr />
 <table class="table">
