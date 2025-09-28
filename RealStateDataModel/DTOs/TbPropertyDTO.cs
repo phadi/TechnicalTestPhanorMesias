@@ -1,4 +1,5 @@
 ﻿using RealStateDataModel.DataModel;
+using RealStateDataModel.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace RealStateDataModel.DTOs
         public int? Year { get; set; }
 
         public int IdOwner { get; set; }
+        public List<CarouselSlide> Slides { get; set; } = null!;
 
         public virtual TbOwnerDTO Owners { get; set; } = null!;
 
@@ -35,7 +37,7 @@ namespace RealStateDataModel.DTOs
             tbProperty.CodeInternal = tbPropertyDTO.CodeInternal;
             tbProperty.Year = tbPropertyDTO.Year;
             tbProperty.IdOwner = tbPropertyDTO.IdOwner;
-            tbProperty.IdOwnerNavigation = TbOwnerDTO.ConvertToData(tbPropertyDTO.Owners);
+            tbProperty.IdOwnerNavigation = tbPropertyDTO.Owners != null ? TbOwnerDTO.ConvertToData(tbPropertyDTO.Owners) : null;
             return tbProperty;
         }
 
@@ -49,7 +51,7 @@ namespace RealStateDataModel.DTOs
             tbPropertyDTO.CodeInternal = tbProperty.CodeInternal;
             tbPropertyDTO.Year = tbProperty.Year;
             tbPropertyDTO.IdOwner = tbProperty.IdOwner;
-            tbPropertyDTO.Owners = TbOwnerDTO.ConvertToDTO(tbProperty.IdOwnerNavigation);
+            tbPropertyDTO.Owners = tbProperty.IdOwnerNavigation != null ? TbOwnerDTO.ConvertToDTO(tbProperty.IdOwnerNavigation) : null;
             return tbPropertyDTO;
         }
     }

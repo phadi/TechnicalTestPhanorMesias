@@ -96,7 +96,7 @@ namespace RealStateApi.Controllers
                 return BadRequest("No se seleccionó ningún archivo.");
             }
 
-            string response = await ImagesHelper.SaveImage(file);
+            string response = await ImagesHelper.SaveImage(file, id);
 
             if (string.IsNullOrEmpty(response))
             {

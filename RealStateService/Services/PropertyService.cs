@@ -50,6 +50,42 @@ namespace RealStateService.Services
                 if (filterPropertyDTOs.Count != 0) tbPropertyDTOs = filterPropertyDTOs;
             }
 
+            if (!string.IsNullOrEmpty(propertyIndexParam.Address))
+            {
+                if (filterPropertyDTOs.Count == 0)
+                    filterPropertyDTOs = tbPropertyDTOs.Where(x => x.Address.Contains(propertyIndexParam.Address)).ToList();
+                else
+                    filterPropertyDTOs = filterPropertyDTOs.Where(x => x.Address.Contains(propertyIndexParam.Address)).ToList();
+                if (filterPropertyDTOs.Count != 0) tbPropertyDTOs = filterPropertyDTOs;
+            }
+
+            if (propertyIndexParam.MinPrice != 0 && propertyIndexParam.MaxPrice != 0)
+            {
+                if (filterPropertyDTOs.Count == 0)
+                    filterPropertyDTOs = tbPropertyDTOs.Where(x => x.Price >= propertyIndexParam.MinPrice && x.Price <= propertyIndexParam.MaxPrice).ToList();
+                else
+                    filterPropertyDTOs = filterPropertyDTOs.Where(x => x.Price >= propertyIndexParam.MinPrice && x.Price <= propertyIndexParam.MaxPrice).ToList();
+                if (filterPropertyDTOs.Count != 0) tbPropertyDTOs = filterPropertyDTOs;
+            }
+
+            if (propertyIndexParam.Year != null && propertyIndexParam.Year != 0)
+            {
+                if (filterPropertyDTOs.Count == 0)
+                    filterPropertyDTOs = tbPropertyDTOs.Where(x => x.Year == propertyIndexParam.Year).ToList();
+                else
+                    filterPropertyDTOs = filterPropertyDTOs.Where(x => x.Year == propertyIndexParam.Year).ToList();
+                if (filterPropertyDTOs.Count != 0) tbPropertyDTOs = filterPropertyDTOs;
+            }
+
+            if (propertyIndexParam.IdOwner != 0)
+            {
+                if (filterPropertyDTOs.Count == 0)
+                    filterPropertyDTOs = tbPropertyDTOs.Where(x => x.IdOwner == propertyIndexParam.IdOwner).ToList();
+                else
+                    filterPropertyDTOs = filterPropertyDTOs.Where(x => x.IdOwner == propertyIndexParam.IdOwner).ToList();
+                if (filterPropertyDTOs.Count != 0) tbPropertyDTOs = filterPropertyDTOs;
+            }
+
             return tbPropertyDTOs;
         }
 
@@ -62,6 +98,26 @@ namespace RealStateService.Services
             }
 
             return tbProperty;
+        }
+
+        public async Task<TbPropertyDTO> GetPropertyDTOById(int id, string? contentRootPath = null)
+        {
+            var tbProperty = await _context.TbProperties.FindAsync(id);            
+            if (tbProperty == null)
+            {
+                throw new DllNotFoundException();
+            }
+            TbPropertyDTO propertyDTO = TbPropertyDTO.ConvertToDTO(tbProperty);
+            propertyDTO.Slides = new List<CarouselSlide>();
+            var slides = await _context.TbPropertyImages.Where(i => i.IdProperty == id).ToListAsync();
+            foreach(TbPropertyImage slide in slides)
+            {
+                //string imageUrl = $"{contentRootPath}\\Images\\{slide.FilePath}";~/Images
+                string imageUrl = $"~/../../../Images/{slide.FilePath}";
+                CarouselSlide carouselSlide = new CarouselSlide { ImageUrl = imageUrl, Caption = slide.Caption, Title = slide.Title };
+                propertyDTO.Slides.Add(carouselSlide);
+            }
+            return propertyDTO;
         }
 
         public async Task<TbPropertyDTO> GetPropertyDetails(int id)
@@ -90,9 +146,21 @@ namespace RealStateService.Services
             return await _context.SaveChangesAsync();
         }
 
+        public async Task<int> UpdatePropertyDTO(TbPropertyDTO tbProperty)
+        {
+            TbProperty property = TbPropertyDTO.ConvertToData(tbProperty);
+            _context.Update(property);
+            return await _context.SaveChangesAsync();
+        }
+
         public DbSet<TbProperty> GetTbProperties()
         {
             return _context.TbProperties;
+        }
+
+        public Task<TbProperty> GetPropertyById(int id, string? contentRootPath = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }
