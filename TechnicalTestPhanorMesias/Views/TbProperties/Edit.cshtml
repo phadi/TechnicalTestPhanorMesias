@@ -13,7 +13,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="IdProperty" />
             <div class="form-group">
@@ -46,34 +46,25 @@
                 <select asp-for="IdOwner" class="form-control" asp-items="ViewBag.IdOwner"></select>
                 <span asp-validation-for="IdOwner" class="text-danger"></span>
             </div>
+            <hr />
+            <div class="form-group">
+                <label class="control-label">Add Image</label>
+                <input type="file" name="imagenSubida" accept="image/*" enctype="multipart/form-data" />
+            </div>
+            <hr />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
-
-            <input type="file" name="imagenSubida" accept="image/*" />
-            <button type="submit">Subir Imagen</button>
-            <a class="btn btn-primary" asp-action="GuardarImagen" >Subir Imagen</a>
         </form>
     </div>
 </div>
-
 <hr />
-<h2>Images</h2>
-<form asp-action="GuardarImagen" enctype="multipart/form-data">
-    <input type="file" name="imagenSubida" accept="image/*" />
-    <button type="submit">Subir Imagen</button>
-    <a class="btn btn-primary" asp-action="GuardarImagen" >Subir Imagen</a>
-</form>
-
-
-
 @if (Model.Slides.Count > 0)
 {
+    <hr />
+    <h2>Images</h2>
     <div class="border">
-        <div class="carousel" data-ride="carousel" data-interval="2500">
-            @* <img src="~/../TechnicalTestPhanorMesias/images/1_CasaProp1-copiaCopia.png" alt="Descripción de la imagen" />
-            <img src="file:///C:/Users/Asus/source/repos/TechnicalTestPhanorMesias/TechnicalTestPhanorMesias/Images/1_casaprop1-copiacopia.png" /> 
-            <img src="@Url.Action("ObtenerImagen", "TbProperties")" alt="Imagen de ejemplo" /> *@
+        <div class="carousel" data-ride="carousel" data-interval="2500">            
             @foreach (var slide in Model.Slides)
             {
                 <img src="@slide.ImageUrl" class="d-block w-100" alt="Imagen 1">
