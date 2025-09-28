@@ -112,7 +112,7 @@ namespace TechnicalTestPhanorMesias.Controllers
                 //};
                 //// ... guardar miModelo en la base de datos ...
 
-                return RedirectToAction("Edit"); // Redirige a otra acción
+                return RedirectToAction("Edit"); 
 
                 // Opción 2: Guardar como arreglo de bytes en la base de datos
                 // using (var memoryStream = new MemoryStream())
