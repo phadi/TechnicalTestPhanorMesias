@@ -1,12 +1,15 @@
-﻿@model RealStateDataModel.DataModel.TbProperty
+﻿@model RealStateDataModel.DTOs.TbPropertyDTO
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Edit Property</h1>
 
-<h4>TbProperty</h4>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -46,13 +49,42 @@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+
+            <input type="file" name="imagenSubida" accept="image/*" />
+            <button type="submit">Subir Imagen</button>
+            <a class="btn btn-primary" asp-action="GuardarImagen" >Subir Imagen</a>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<hr />
+<h2>Images</h2>
+<form asp-action="GuardarImagen" enctype="multipart/form-data">
+    <input type="file" name="imagenSubida" accept="image/*" />
+    <button type="submit">Subir Imagen</button>
+    <a class="btn btn-primary" asp-action="GuardarImagen" >Subir Imagen</a>
+</form>
+
+
+
+@if (Model.Slides.Count > 0)
+{
+    <div class="border">
+        <div class="carousel" data-ride="carousel" data-interval="2500">
+            @* <img src="~/../TechnicalTestPhanorMesias/images/1_CasaProp1-copiaCopia.png" alt="Descripción de la imagen" />
+            <img src="file:///C:/Users/Asus/source/repos/TechnicalTestPhanorMesias/TechnicalTestPhanorMesias/Images/1_casaprop1-copiacopia.png" /> 
+            <img src="@Url.Action("ObtenerImagen", "TbProperties")" alt="Imagen de ejemplo" /> *@
+            @foreach (var slide in Model.Slides)
+            {
+                <img src="@slide.ImageUrl" class="d-block w-100" alt="Imagen 1">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>@slide.Title</h5>
+                    <p>@slide.Caption</p>
+                </div>
+            }
+        </div>
+    </div>
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

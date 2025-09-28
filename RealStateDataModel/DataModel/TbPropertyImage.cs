@@ -14,6 +14,8 @@ public partial class TbPropertyImage
     public string? FilePath { get; set; }
 
     public bool? Enabled { get; set; }
+    public string? Caption { get; set; }
+    public string? Title { get; set; }
 
     public virtual TbImageType IdImageTypeNavigation { get; set; } = null!;
 

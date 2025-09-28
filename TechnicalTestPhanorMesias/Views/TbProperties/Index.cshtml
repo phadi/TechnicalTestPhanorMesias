@@ -15,47 +15,37 @@
     <table class="table">
         <thead>
             <tr>
-                <th>
-                    Owner Name
+                <th colspan="7">
                 </th>
-                <th>
-                    Price range
-                </th>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Address
-                </th>
-                <th>
-                    CodeInternal
-                </th>
-                <th>
-                    Year
-                </th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
             <tr>
                     <td>
-                        <input asp-for="OwnerName" />
+                        <label asp-for="IdOwner"></label>
+                        <input asp-for="IdOwner" placeholder="Owner Id" />
                     </td>
                     <td>
-                        <input asp-for="MinPrice" />
-                        <input asp-for="MaxPrice" />
+                        <label asp-for="MinPrice" ></label>
+                        <input asp-for="MinPrice" placeholder="Min Price range" />
+                        <label asp-for="MaxPrice"></label>
+                        <input asp-for="MaxPrice" placeholder="Max price range" />
                     </td>
                     <td>
-                        <input asp-for="Name" />
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" placeholder="Property Name" />
                     </td>
                     <td>
-                        <input asp-for="Address" />
+                        <label asp-for="Address"></label>
+                        <input asp-for="Address" placeholder="Property Address" />
                     </td>
                     <td>
-                        <input asp-for="CodeInternal" />
+                         <label asp-for="CodeInternal"></label>
+                        <input asp-for="CodeInternal" placeholder="Property Code Internal" />
                     </td>
                     <td>
-                        <input asp-for="Year" />
+                        <label asp-for="Year"></label>
+                        <input asp-for="Year" placeholder="Property Year" />
                     </td>
                     <td>
                     </td>
@@ -65,8 +55,8 @@
 
     <p>
         <input type="submit" value="Search" class="btn btn-primary" />
+        <a class="btn btn-primary" asp-action="Index" >Clean</a>
     </p>
-
 </form>
 
 <hr />

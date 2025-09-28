@@ -26,7 +26,6 @@ namespace RealStateService.Services
         public async Task<List<TbProperty>> GetProperties(PropertyFilters filters)
         {
             var properties = await _context.TbProperties.ToListAsync();
-            var t = string.IsNullOrEmpty(filters.Name);
             var resp = (from p in properties
                         where (!string.IsNullOrEmpty(filters.Name) && p.Name.ToLowerInvariant().Contains(filters.Name.ToLowerInvariant()))
                         || (!string.IsNullOrEmpty(filters.CodeInternal) && p.CodeInternal.ToLowerInvariant().Contains(filters.CodeInternal.ToLowerInvariant()))
@@ -113,6 +112,8 @@ namespace RealStateService.Services
                 image.IdProperty = id;
                 image.IdImageType = 1;
                 image.Enabled = true;
+                image.Caption = fileName.Split(".")[0];
+                image.Title = fileName.Split(".")[0];
                 _context.Add(image);
 
                 return await _context.SaveChangesAsync();
