@@ -108,7 +108,7 @@ namespace RealStateService.Services
             if (TbPropertyExists(id))
             {
                 TbPropertyImage image = new TbPropertyImage();
-                image.FilePath = $"{id.ToString()}_{fileName}";
+                image.FilePath = fileName;
                 image.IdProperty = id;
                 image.IdImageType = 1;
                 image.Enabled = true;

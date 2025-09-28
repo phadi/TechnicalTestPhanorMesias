@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RealStateDataModel.DataModel;
+using RealStateDataModel.DTOs;
+using RealStateService.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using RealStateDataModel.DataModel;
 using TechnicalTestPhanorMesias.Models;
-using RealStateService.Interfaces;
-using RealStateDataModel.DTOs;
 
 namespace TechnicalTestPhanorMesias.Controllers
 {
@@ -72,64 +73,6 @@ namespace TechnicalTestPhanorMesias.Controllers
             return View(tbProperty);
         }
 
-        public ActionResult ObtenerImagen()
-        {
-            // Lógica para obtener la ruta o los bytes de la imagen
-            string rutaImagen = "/images/2_CasaProp1"; // o bytes desde BD
-
-            // Devuelve el archivo de imagen
-            return File(rutaImagen, "image/png"); // El segundo parámetro es el contentType
-        }
-
-        
-        //public async Task<IActionResult> GuardarImagen()
-        //{
-        //    return View("Edit");
-        //}
-
-        //[HttpPost]
-        public async Task<IActionResult> GuardarImagen(IFormFile imagenSubida)
-        {
-            if (imagenSubida != null && imagenSubida.Length > 0)
-            {
-                // Opción 1: Guardar en el sistema de archivos
-                var nombreUnico = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imagenSubida.FileName);
-                var rutaCarpeta = Path.Combine(_hostingEnvironment.WebRootPath, "Images"); // Crear una carpeta 'imagenes' en wwwroot
-                Directory.CreateDirectory(rutaCarpeta); // Asegurarse de que la carpeta existe
-
-                var rutaCompletaArchivo = Path.Combine(rutaCarpeta, nombreUnico);
-
-                using (var stream = new FileStream(rutaCompletaArchivo, FileMode.Create))
-                {
-                    await imagenSubida.CopyToAsync(stream);
-                }
-
-                //// Aquí puedes guardar la ruta en tu base de datos
-                //var miModelo = new MiModeloImagen
-                //{
-                //    NombreImagen = nombreUnico,
-                //    RutaArchivo = $"~/imagenes/{nombreUnico}" // Guarda la ruta relativa para mostrarla
-                //};
-                //// ... guardar miModelo en la base de datos ...
-
-                return RedirectToAction("Edit"); 
-
-                // Opción 2: Guardar como arreglo de bytes en la base de datos
-                // using (var memoryStream = new MemoryStream())
-                // {
-                //     await imagenSubida.CopyToAsync(memoryStream);
-                //     var miModelo = new MiModeloImagen
-                //     {
-                //         NombreImagen = Path.GetFileName(imagenSubida.FileName),
-                //         ContenidoImagen = memoryStream.ToArray()
-                //     };
-                //     // ... guardar miModelo en la base de datos ...
-                // }
-            }
-            // Manejar el caso en que no se sube ningún archivo o es inválido
-            return View("Edit");
-        }
-
         // GET: TbProperties/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
@@ -137,7 +80,7 @@ namespace TechnicalTestPhanorMesias.Controllers
             {
                 return NotFound();
             }
-            var tbProperty = await _propertyService.GetPropertyDTOById(id, _hostingEnvironment.ContentRootPath);
+            var tbProperty = await _propertyService.GetPropertyDTOById(id);
             if (tbProperty == null)
             {
                 return NotFound();
@@ -151,7 +94,7 @@ namespace TechnicalTestPhanorMesias.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, [Bind("IdProperty,Name,Address,Price,CodeInternal,Year,IdOwner")] TbPropertyDTO tbProperty)
+        public async Task<IActionResult> Edit(int id, [Bind("IdProperty,Name,Address,Price,CodeInternal,Year,IdOwner")] TbPropertyDTO tbProperty, IFormFile imagenSubida)
         {
             if (id != tbProperty.IdProperty)
             {
@@ -160,6 +103,11 @@ namespace TechnicalTestPhanorMesias.Controllers
 
             try
             {
+                if (imagenSubida != null && imagenSubida.Length > 0)
+                {
+                    await UploadImage(imagenSubida, id);
+                }
+
                 await _propertyService.UpdatePropertyDTO(tbProperty);
                 return RedirectToAction(nameof(Index));
             }
@@ -174,9 +122,21 @@ namespace TechnicalTestPhanorMesias.Controllers
                     throw;
                 }
             }
+        }
 
-            ViewData["IdOwner"] = new SelectList(_ownerService.GetOwners(), "IdOwner", "FullName", tbProperty.IdOwner);
-            return View(tbProperty);
+        private async Task UploadImage(IFormFile imagenSubida, int id)
+        {
+            var nombreUnico = id.ToString() + "_" + Guid.NewGuid().ToString() + "_" + Path.GetFileName(imagenSubida.FileName);
+            var rutaCarpeta = Path.Combine(_hostingEnvironment.WebRootPath, "Images"); // Crear una carpeta 'imagenes' en wwwroot
+            Directory.CreateDirectory(rutaCarpeta); // Asegurarse de que la carpeta existe
+
+            var rutaCompletaArchivo = Path.Combine(rutaCarpeta, nombreUnico);
+
+            using (var stream = new FileStream(rutaCompletaArchivo, FileMode.Create))
+            {
+                await imagenSubida.CopyToAsync(stream);
+                await _propertyService.SaveImage(id, nombreUnico);
+            }
         }
 
         private bool TbPropertyExists(int id)

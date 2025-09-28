@@ -18,11 +18,13 @@ namespace RealStateApi.Controllers
     {
         private readonly IPropertyApiService _propertyService;
         private readonly IOwnerService _ownerService;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public TbPropertiesController(IPropertyApiService propertyService, IOwnerService ownerService)
+        public TbPropertiesController(IPropertyApiService propertyService, IOwnerService ownerService, IWebHostEnvironment hostingEnvironment)
         {
             _propertyService = propertyService;
             _ownerService = ownerService;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet(Name = "GetTbProperties")]
@@ -96,16 +98,34 @@ namespace RealStateApi.Controllers
                 return BadRequest("No se seleccionó ningún archivo.");
             }
 
-            string response = await ImagesHelper.SaveImage(file, id);
+            string response = await SaveImage(file, id);
 
             if (string.IsNullOrEmpty(response))
-            {
-                string fileName = file.FileName;
-                await _propertyService.SaveImage(id, fileName);
-                return Ok(new { message = "Imagen subida exitosamente", fileName = fileName });
-            }                
+                return Ok(new { message = "Imagen subida exitosamente", fileName = Guid.NewGuid().ToString() + "_" + file.FileName });
             else
                 return StatusCode(500, "Ha ocurrido un error al subir la imagen");
+        }
+
+        private async Task<string> SaveImage(IFormFile file, int id) 
+        {
+            try
+            {
+                var nombreUnico = id.ToString() + "_" + Guid.NewGuid().ToString() + "_" + file.FileName;
+                var rutaCarpeta = Path.Combine(_hostingEnvironment.WebRootPath, "Images"); // Crear una carpeta 'imagenes' en wwwroot
+                Directory.CreateDirectory(rutaCarpeta); // Asegurarse de que la carpeta existe
+
+                var rutaCompletaArchivo = Path.Combine(rutaCarpeta, nombreUnico);
+
+                using (var stream = new FileStream(rutaCompletaArchivo, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                    await _propertyService.SaveImage(id, nombreUnico);
+                }
+                return string.Empty;
+            }
+            catch (Exception ex) {
+                return ex.Message;
+            }
         }
     }
 }
