@@ -103,7 +103,7 @@ namespace RealStateService.Services
             return newProperty;
         }
 
-        public async Task<int> SaveImage(int id, string fileName)
+        public async Task<int> SaveImage(int id, string fileName, byte[] imageContent)
         {
             if (TbPropertyExists(id))
             {
@@ -114,6 +114,7 @@ namespace RealStateService.Services
                 image.Enabled = true;
                 image.Caption = fileName.Split(".")[0];
                 image.Title = fileName.Split(".")[0];
+                image.ImageContent = imageContent;
                 _context.Add(image);
 
                 return await _context.SaveChangesAsync();
@@ -129,7 +130,5 @@ namespace RealStateService.Services
             List<TbProperty> properties = GetProperties().Result;
             return properties.Any(e => e.IdProperty == id);
         }
-
-        
     }
 }

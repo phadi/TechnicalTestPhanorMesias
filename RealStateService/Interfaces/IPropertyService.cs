@@ -20,6 +20,6 @@ namespace RealStateService.Interfaces
         Task<int> CreateProperty(TbProperty tbProperty);
         Task<int> UpdateProperty(TbProperty tbProperty);
         Task<int> UpdatePropertyDTO(TbPropertyDTO tbProperty);
-        Task<int> SaveImage(int id, string fileName);
+        Task<int> SaveImage(int id, string fileName, byte[] imageContent);
     }
 }
