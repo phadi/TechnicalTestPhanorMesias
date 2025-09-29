@@ -58,22 +58,19 @@
         </form>
     </div>
 </div>
-<hr />
+
 @if (Model.Slides.Count > 0)
 {
     <hr />
     <h2>Images</h2>
-    <div class="border">
-        <div class="carousel" data-ride="carousel" data-interval="2500">            
-            @foreach (var slide in Model.Slides)
+    <div class="image-container">
+         @foreach (var slide in Model.Slides)
             {
-                <img src="@slide.ImageUrl" class="d-block w-100" alt="Imagen 1">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>@slide.Title</h5>
-                    <p>@slide.Caption</p>
+                <div class="image-thumbnail">
+                    <img src="@slide.ImageUrl">
+                    <hr />
                 </div>
             }
-        </div>
     </div>
 }
 

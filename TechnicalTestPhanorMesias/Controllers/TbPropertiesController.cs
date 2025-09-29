@@ -42,7 +42,7 @@ namespace TechnicalTestPhanorMesias.Controllers
                 return NotFound();
             }
 
-            var tbProperty = await _propertyService.GetPropertyDetails(id);
+            var tbProperty = await _propertyService.GetPropertyDTOById(id);
 
             return View(tbProperty);
         }
