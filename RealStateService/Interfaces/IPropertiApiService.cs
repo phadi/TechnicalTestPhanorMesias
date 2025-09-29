@@ -16,6 +16,6 @@ namespace RealStateService.Interfaces
         Task<int> UpdateProperty(int id, UpdatedProperty tbProperty);
         Task<int> ChangePrice(int id, decimal price);
         Task<TbProperty> CreateProperty(CreatedProperty tbProperty);
-        Task<int> SaveImage(int id, string fileName);
+        Task<int> SaveImage(int id, string fileName, byte[] imageContent);
     }
 }

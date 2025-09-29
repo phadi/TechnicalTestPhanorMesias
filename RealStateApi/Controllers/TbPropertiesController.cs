@@ -18,13 +18,11 @@ namespace RealStateApi.Controllers
     {
         private readonly IPropertyApiService _propertyService;
         private readonly IOwnerService _ownerService;
-        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public TbPropertiesController(IPropertyApiService propertyService, IOwnerService ownerService, IWebHostEnvironment hostingEnvironment)
+        public TbPropertiesController(IPropertyApiService propertyService, IOwnerService ownerService)
         {
             _propertyService = propertyService;
             _ownerService = ownerService;
-            _hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet(Name = "GetTbProperties")]
@@ -111,15 +109,12 @@ namespace RealStateApi.Controllers
             try
             {
                 var nombreUnico = id.ToString() + "_" + Guid.NewGuid().ToString() + "_" + file.FileName;
-                var rutaCarpeta = Path.Combine(_hostingEnvironment.WebRootPath, "Images"); // Crear una carpeta 'imagenes' en wwwroot
-                Directory.CreateDirectory(rutaCarpeta); // Asegurarse de que la carpeta existe
 
-                var rutaCompletaArchivo = Path.Combine(rutaCarpeta, nombreUnico);
-
-                using (var stream = new FileStream(rutaCompletaArchivo, FileMode.Create))
+                using (var memoryStream = new MemoryStream())
                 {
-                    await file.CopyToAsync(stream);
-                    await _propertyService.SaveImage(id, nombreUnico);
+                    await file.CopyToAsync(memoryStream);
+                    var ContenidoImagen = memoryStream.ToArray();
+                    await _propertyService.SaveImage(id, nombreUnico, ContenidoImagen);
                 }
                 return string.Empty;
             }

@@ -51,8 +51,13 @@ namespace RealStateService.Services
             var slides = await _context.TbPropertyImages.Where(i => i.IdProperty == id).ToListAsync();
             foreach(TbPropertyImage slide in slides)
             {
-                string imageUrl = $"/Images/{slide.FilePath}";
-                CarouselSlide carouselSlide = new CarouselSlide { ImageUrl = imageUrl, Caption = slide.Caption, Title = slide.Title };
+                if (slide.ImageContent == null)
+                    continue;
+
+                var base64 = Convert.ToBase64String(slide.ImageContent);
+                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+
+                CarouselSlide carouselSlide = new CarouselSlide { ImageUrl = imgSrc, Caption = slide.Caption, Title = slide.Title };
                 propertyDTO.Slides.Add(carouselSlide);
             }
             return propertyDTO;
@@ -96,7 +101,7 @@ namespace RealStateService.Services
             return _context.TbProperties;
         }
 
-        public async Task<int> SaveImage(int id, string fileName)
+        public async Task<int> SaveImage(int id, string fileName, byte[] imageContent)
         {
             if (TbPropertyExists(id))
             {
@@ -107,6 +112,7 @@ namespace RealStateService.Services
                 image.Enabled = true;
                 image.Caption = fileName.Split(".")[0];
                 image.Title = fileName.Split(".")[0];
+                image.ImageContent = imageContent;
                 _context.Add(image);
 
                 return await _context.SaveChangesAsync();
