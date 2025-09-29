@@ -18,4 +18,4 @@ La solucion consta de los siguientes proyectos:
 
   Para ejectutar el proyecto API, solo se debe abrir la solucion completa en Visual Stidio, seleccionar el proyecto RealStateApi como proyecto de inicio y ejecutar.
 
-   Para ejectutar el proyecto MVC, solo se debe abrir la solucion completa en Visual Stidio, seleccionar el proyecto TechnicalTestPhanorMesias como proyecto de inicio y ejecutar.
+   Para ejectutar el proyecto MVC, solo se debe abrir la solucion completa en Visual Stidio, seleccionar el proyecto TechnicalTestPhanorMesias como proyecto de inicio y ejecutar, tambien es posible revisar la funcionalidad del MVC en este sitio: http://realstatetest.somee.com.
